@@ -54,4 +54,18 @@ Then it can exit!
 
 Notice that there is now a small lake!
 This is how my algorithm works.
-It runs in Windows Terminal using ANSI escape codes to do colors and cursor movement.
+It runs in Windows Terminal/PowerShell using ANSI escape codes to do colors and cursor movement.
+
+Pictures if you can't run it:
+
+Long picture:
+
+![long_pic_1](Images/long_1.png)
+
+Another one:
+
+![long_pic_2](Images/long_2.png)
+
+One in fullscreen:
+
+![fullscreen_pic](Images/fullscreen_pic.png)
