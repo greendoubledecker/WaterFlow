@@ -11,7 +11,7 @@ vector<int> land = {100, 255, 100};
 vector<int> valley = {230, 135, 15};
 vector<int> peak = {140, 20, 210};
 
-bool smoothing = true, diagFlow = true;
+bool diagFlow = true;
 
 int smoothing_passes = 3;
 
@@ -139,7 +139,7 @@ int main(){
 	
 	std::cout << "\x1b[2J";
 	
-	if(smoothing){
+	if(smoothing_passes > 0){
 		for(int i = 0; i < smoothing_passes; ++i){
 		vector<vector<int>> smoothGrid(height, vector<int>(width));
 			for (int y = 0; y < height; ++y) {
