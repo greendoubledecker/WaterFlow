@@ -14,6 +14,9 @@ vector<int> peak = {140, 20, 210};
 bool diagFlow = true;
 
 int smoothing_passes = 3;
+int bg_smoothing = 20;
+
+bool slopeDir = true; //true for right, false for left;
 
 void setPixel(int row, int col, int r, int g, int b) {
     std::cout << "\x1b[" << row + 1 << ";" << col * 2 + 1 << "H"      // Move cursor
@@ -117,6 +120,17 @@ vector<vector<int>> waterFlow(const vector<vector<int>> prevWater){
 	return ans;
 }
 
+vector<vector<int>> addVec(vector<vector<int>> v1, vector<vector<int>> v2){
+	vector<vector<int>> ans(v1.size(), vector<int>(v1[0].size()));
+	for(int i = 0; i < v1.size(); ++i){
+		for(int j = 0; j < v1[0].size(); ++j){
+			//cout << "in loop" << i << ", " << j << endl;
+			ans[i][j] = v1[i][j] + v2[i][j];
+		}
+	}
+	return ans;
+}
+
 int main(){
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
@@ -129,19 +143,56 @@ int main(){
     std::uniform_int_distribution<int> dist(1, 1000);
     
     vector<vector<int>> terrain(height, vector<int>(width));
+    vector<vector<int>> bg(height, vector<int>(width));
+    vector<vector<int>> slope(height, vector<int>(width));
     vector<vector<int>> waterGrid(height, vector<int>(width)); // y, x, height(negative for water)
     
     for(int y = 0; y < height; ++y){
         for(int x = 0; x < width; ++x){
-            terrain[y][x] = dist(rng);
+            terrain[y][x] = dist(rng) / 4;
+            bg[y][x] = (dist(rng) - 300);
+            float frac = static_cast<float>(x) / width;
+            if(slopeDir){
+				slope[y][x] = (1 - frac) * 500;
+			}else{
+				slope[y][x] = frac * 500;
+			}
 		}
 	}
 	
 	std::cout << "\x1b[2J";
 	
+	for(int i = 0; i < bg_smoothing; ++i){
+		vector<vector<int>> smoothGrid(height, vector<int>(width));
+		for (int y = 0; y < height; ++y) {
+			for (int x = 0; x < width; ++x) {
+				double sum = bg[y][x];
+				int count = 1;
+				if(y > 0){
+					sum += bg[y-1][x];
+					count++;
+				}
+				if(y < height - 1){
+					sum += bg[y+1][x];
+					count++;
+				}
+				if(x > 0){
+					sum += bg[y][x-1];
+					count++;
+				}
+				if(x < width - 1){
+					sum += bg[y][x+1];
+					count++; 
+				}
+				smoothGrid[y][x] = sum / count;
+			}
+		}
+		bg = smoothGrid;
+	}
+	
 	if(smoothing_passes > 0){
 		for(int i = 0; i < smoothing_passes; ++i){
-		vector<vector<int>> smoothGrid(height, vector<int>(width));
+			vector<vector<int>> smoothGrid(height, vector<int>(width));
 			for (int y = 0; y < height; ++y) {
 				for (int x = 0; x < width; ++x) {
 					double sum = terrain[y][x];
@@ -171,6 +222,11 @@ int main(){
 	}else{
 		waterGrid = terrain;
 	}
+	
+	waterGrid = addVec(waterGrid, bg);
+	waterGrid = addVec(waterGrid, slope);
+	//cout << "after" << endl;
+	
 	pair<int, int> top, bottom;
 	int high = 0;
 	int low = 1001;
@@ -185,6 +241,7 @@ int main(){
 			}
 		}
 	}
+	cout << high << " " << low << endl;
 	waterGrid[top.first][top.second] *= -1;
 	
 	printColorGrid(waterGrid);
