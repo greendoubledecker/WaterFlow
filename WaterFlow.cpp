@@ -13,6 +13,8 @@ vector<int> peak = {140, 20, 210};
 
 bool smoothing = true, diagFlow = true;
 
+int smoothing_passes = 3;
+
 void setPixel(int row, int col, int r, int g, int b) {
     std::cout << "\x1b[" << row + 1 << ";" << col * 2 + 1 << "H"      // Move cursor
               << "\x1b[48;2;" << r << ";" << g << ";" << b << "m  " // Draw block
@@ -138,32 +140,34 @@ int main(){
 	std::cout << "\x1b[2J";
 	
 	if(smoothing){
+		for(int i = 0; i < smoothing_passes; ++i){
 		vector<vector<int>> smoothGrid(height, vector<int>(width));
-		for (int y = 0; y < height; ++y) {
-			for (int x = 0; x < width; ++x) {
-				double sum = terrain[y][x];
-				int count = 1;
-				if(y > 0){
-					sum += terrain[y-1][x];
-					count++;
+			for (int y = 0; y < height; ++y) {
+				for (int x = 0; x < width; ++x) {
+					double sum = terrain[y][x];
+					int count = 1;
+					if(y > 0){
+						sum += terrain[y-1][x];
+						count++;
+					}
+					if(y < height - 1){
+						sum += terrain[y+1][x];
+						count++;
+					}
+					if(x > 0){
+						sum += terrain[y][x-1];
+						count++;
+					}
+					if(x < width - 1){
+						sum += terrain[y][x+1];
+						count++; 
+					}
+					smoothGrid[y][x] = sum / count;
 				}
-				if(y < height - 1){
-					sum += terrain[y+1][x];
-					count++;
-				}
-				if(x > 0){
-					sum += terrain[y][x-1];
-					count++;
-				}
-				if(x < width - 1){
-					sum += terrain[y][x+1];
-					count++; 
-				}
-				smoothGrid[y][x] = sum / count;
 			}
+			waterGrid = smoothGrid;
+			terrain = smoothGrid;
 		}
-		waterGrid = smoothGrid;
-		
 	}else{
 		waterGrid = terrain;
 	}
