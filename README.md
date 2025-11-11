@@ -1,57 +1,12 @@
 # WaterFlow
-Simulated water flowing down a terrain
 
-At each step, the water finds the lowest square beside the water to flood.
-Notice that this makes the water able to fill lakes.
-If the heights are
+-Flood
 
-5554555
+Same algorithm, now trying a flood!
 
-5543455
+The water comes in from the bottom and slowly invades the land.
 
-5432345
+How long can the land keep the water at bay? ;)
 
-5543455
+!\[flood](Images/flood.png)
 
-5553555
-
-and water starts from the 4 at the top, the water will go lower until it has nowhere to go.
-
-555W555
-
-554W455
-
-543W345
-
-5543455
-
-5553555
-
-Then, water will go to the 3's.
-
-555W555
-
-554W455
-
-54WWW45
-
-554W455
-
-5553555
-
-Then it can exit!
-
-
-555W555
-
-554W455
-
-54WWW45
-
-554W455
-
-555W555
-
-Notice that there is now a small lake!
-This is how my algorithm works.
-It runs in Windows Terminal using ANSI escape codes to do colors and cursor movement.

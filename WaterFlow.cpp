@@ -242,12 +242,18 @@ int main(){
 		}
 	}
 	cout << high << " " << low << endl;
-	waterGrid[top.first][top.second] *= -1;
+	for(int y = 0; y < height; ++y){
+		if(slopeDir){
+			waterGrid[y][width - 1] *= -1;
+		}else{
+			waterGrid[y][0] *= -1;
+		}
+	}
 	
 	printColorGrid(waterGrid);
 	setPixel(top.first, top.second, peak[0], peak[1], peak[2]);
 	setPixel(bottom.first, bottom.second, valley[0], valley[1], valley[2]);
-	while(waterGrid[bottom.first][bottom.second] > 0){
+	while(waterGrid[top.first][top.second] > 0){
 		waterGrid = waterFlow(waterGrid);
 	}
 	setPixel(top.first, top.second, peak[0], peak[1], peak[2]);
