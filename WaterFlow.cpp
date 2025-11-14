@@ -16,7 +16,7 @@ bool diagFlow = true;
 int smoothing_passes = 3;
 int bg_smoothing = 20;
 
-bool slopeDir = true; //true for right, false for left;
+bool slopeDir = false; //true for right, false for left;
 
 void setPixel(int row, int col, int r, int g, int b) {
     std::cout << "\x1b[" << row + 1 << ";" << col * 2 + 1 << "H"      // Move cursor
@@ -241,7 +241,7 @@ int main(){
 			}
 		}
 	}
-	cout << high << " " << low << endl;
+	//cout << high << " " << low << endl;
 	waterGrid[top.first][top.second] *= -1;
 	
 	printColorGrid(waterGrid);
