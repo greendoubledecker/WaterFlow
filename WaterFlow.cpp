@@ -239,7 +239,6 @@ int main(){
 			}
 		}
 	}
-	//cout << high << " " << low << endl;
 	waterGrid[top.first][top.second] *= -1;
 	
 	printColorGrid(waterGrid);
