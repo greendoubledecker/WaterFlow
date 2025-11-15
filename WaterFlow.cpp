@@ -124,7 +124,6 @@ vector<vector<int>> addVec(vector<vector<int>> v1, vector<vector<int>> v2){
 	vector<vector<int>> ans(v1.size(), vector<int>(v1[0].size()));
 	for(int i = 0; i < v1.size(); ++i){
 		for(int j = 0; j < v1[0].size(); ++j){
-			//cout << "in loop" << i << ", " << j << endl;
 			ans[i][j] = v1[i][j] + v2[i][j];
 		}
 	}
@@ -225,7 +224,6 @@ int main(){
 	
 	waterGrid = addVec(waterGrid, bg);
 	waterGrid = addVec(waterGrid, slope);
-	//cout << "after" << endl;
 	
 	pair<int, int> top, bottom;
 	int high = 0;
@@ -247,8 +245,16 @@ int main(){
 	printColorGrid(waterGrid);
 	setPixel(top.first, top.second, peak[0], peak[1], peak[2]);
 	setPixel(bottom.first, bottom.second, valley[0], valley[1], valley[2]);
-	while(waterGrid[bottom.first][bottom.second] > 0){
+	while(true){
 		waterGrid = waterFlow(waterGrid);
+		bool stop = false;
+		for(int i = 0; i < height; ++i){
+			if((slopeDir && waterGrid[i][width - 1] < 0) || (!slopeDir && waterGrid[i][0] < 0)){
+				stop = true;
+				break;
+			}
+		}
+		if(stop) break;
 	}
 	setPixel(top.first, top.second, peak[0], peak[1], peak[2]);
 	setPixel(bottom.first, bottom.second, valley[0], valley[1], valley[2]);
