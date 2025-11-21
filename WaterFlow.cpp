@@ -124,7 +124,6 @@ vector<vector<int>> addVec(vector<vector<int>> v1, vector<vector<int>> v2){
 	vector<vector<int>> ans(v1.size(), vector<int>(v1[0].size()));
 	for(int i = 0; i < v1.size(); ++i){
 		for(int j = 0; j < v1[0].size(); ++j){
-			//cout << "in loop" << i << ", " << j << endl;
 			ans[i][j] = v1[i][j] + v2[i][j];
 		}
 	}
@@ -225,7 +224,6 @@ int main(){
 	
 	waterGrid = addVec(waterGrid, bg);
 	waterGrid = addVec(waterGrid, slope);
-	//cout << "after" << endl;
 	
 	pair<int, int> top, bottom;
 	int high = 0;
@@ -241,7 +239,6 @@ int main(){
 			}
 		}
 	}
-	cout << high << " " << low << endl;
 	for(int y = 0; y < height; ++y){
 		if(slopeDir){
 			waterGrid[y][width - 1] *= -1;
