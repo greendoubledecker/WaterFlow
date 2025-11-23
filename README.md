@@ -53,7 +53,7 @@ Then it can exit!
 555W555
 
 Notice that there is now a small lake!
-This is how my algorithm works.
+This is how my algorithm works. The water flows down a slope from the highest point to the other side of the slope.
 It runs in Windows Terminal/PowerShell using ANSI escape codes to do colors and cursor movement.
 
 Pictures if you can't run it:
